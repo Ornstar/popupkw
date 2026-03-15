@@ -31,11 +31,6 @@
         --text-soft:#d8f7c2;
       }
 
-      @keyframes popupkw-orbFloat{
-        0%,100%{transform:translate3d(0,0,0) scale(1)}
-        50%{transform:translate3d(0,-16px,0) scale(1.08)}
-      }
-
       @keyframes popupkw-cardFloat{
         0%,100%{transform:translateY(0)}
         50%{transform:translateY(-8px)}
@@ -44,15 +39,15 @@
       @keyframes popupkw-borderGlow{
         0%,100%{
           box-shadow:
-            0 24px 60px rgba(0,0,0,.55),
+            0 24px 60px rgba(0,0,0,.40),
             0 0 0 1px rgba(255,255,255,.04) inset,
             0 0 24px rgba(125,255,0,.10)
         }
         50%{
           box-shadow:
-            0 28px 70px rgba(0,0,0,.62),
+            0 28px 70px rgba(0,0,0,.48),
             0 0 0 1px rgba(255,255,255,.06) inset,
-            0 0 40px rgba(125,255,0,.28)
+            0 0 40px rgba(125,255,0,.22)
         }
       }
 
@@ -108,56 +103,34 @@
 
       #${OVERLAY_ID}{
         position:fixed;
-        inset:0;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
         z-index:2147483647;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:24px;
-        overflow:hidden;
-        background:
-          radial-gradient(circle at 20% 20%, rgba(125,255,0,.16), transparent 28%),
-          radial-gradient(circle at 80% 25%, rgba(78,190,0,.10), transparent 24%),
-          radial-gradient(circle at 50% 100%, rgba(146,255,59,.10), transparent 35%),
-          linear-gradient(180deg,#020500 0%, #071703 52%, #020800 100%);
-        font-family:Arial, sans-serif;
+        display:block;
+        width:auto;
+        height:auto;
+        padding:0;
+        margin:0;
+        background:transparent !important;
+        overflow:visible;
+        pointer-events:none;
+        font-family:Arial,sans-serif;
       }
 
       #${OVERLAY_ID}::before,
       #${OVERLAY_ID}::after{
-        content:"";
-        position:absolute;
-        pointer-events:none;
-        border-radius:999px;
-        filter:blur(70px);
-        opacity:.55;
-        z-index:0;
-      }
-
-      #${OVERLAY_ID}::before{
-        width:240px;
-        height:240px;
-        left:8%;
-        top:10%;
-        background:rgba(125,255,0,.22);
-        animation:popupkw-orbFloat 10s ease-in-out infinite;
-      }
-
-      #${OVERLAY_ID}::after{
-        width:220px;
-        height:220px;
-        right:10%;
-        bottom:8%;
-        background:rgba(52,170,0,.20);
-        animation:popupkw-orbFloat 12s ease-in-out infinite reverse;
+        display:none !important;
+        content:none !important;
       }
 
       #${OVERLAY_ID} .sW{
-        width:min(380px, 100%);
+        width:min(380px, calc(100vw - 24px));
         border-radius:22px;
         overflow:hidden;
         position:relative;
         z-index:1;
+        pointer-events:auto;
         background:
           radial-gradient(120% 90% at 50% -10%, rgba(125,255,0,.14), transparent 55%),
           radial-gradient(90% 70% at 0% 100%, rgba(87,212,0,.12), transparent 60%),
@@ -391,8 +364,7 @@
       }
 
       @media (max-width:420px){
-        #${OVERLAY_ID}{ padding:14px; }
-        #${OVERLAY_ID} .sW{ width:min(340px, 100%); }
+        #${OVERLAY_ID} .sW{ width:min(340px, calc(100vw - 16px)); }
         #${OVERLAY_ID} .sC{ padding:11px; }
         #${OVERLAY_ID} .sG{ gap:8px; }
         #${OVERLAY_ID} .sK{ padding:10px 8px; }
@@ -402,8 +374,6 @@
       }
 
       @media (prefers-reduced-motion: reduce){
-        #${OVERLAY_ID}::before,
-        #${OVERLAY_ID}::after,
         #${OVERLAY_ID} .sW,
         #${OVERLAY_ID} .sW::after,
         #${OVERLAY_ID} .sC::before,
@@ -471,13 +441,12 @@
   function closePopup(markSeen = true) {
     const overlay = document.getElementById(OVERLAY_ID);
     if (overlay) overlay.remove();
+
     if (markSeen) {
       try {
         localStorage.setItem(STORAGE_KEY, "1");
       } catch (_) {}
     }
-    document.documentElement.style.overflow = "";
-    document.body.style.overflow = "";
   }
 
   function showPopup() {
@@ -492,15 +461,6 @@
     const overlay = document.createElement("div");
     overlay.id = OVERLAY_ID;
     overlay.innerHTML = buildPopupHTML();
-
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) {
-        closePopup(true);
-      }
-    });
 
     document.body.appendChild(overlay);
 
