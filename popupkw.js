@@ -3,7 +3,6 @@
 
   const LIVECHAT_URL = "https://speed-ly.com/LIVECHAT_KLIKWIN88";
   const TELEGRAM_URL = "https://speed-ly.com/TELEGRAM_OFFICIAL";
-  const CLOSE_REDIRECT_URL = "https://speed-ly.com/KLIKWIN88";
   const BANNER_URL = "http://plcl.me/images/p2XQC.jpg";
 
   const STORAGE_KEY = "popup_kw_seen_v1";
@@ -344,7 +343,6 @@
         margin-top:12px;
         padding:12px 20px;
         text-align:center;
-        text-decoration:none;
         background:
           radial-gradient(circle at 50% 0%, rgba(255,255,255,.35), transparent 55%),
           linear-gradient(180deg, #fffda8 0%, #d7ff54 35%, #7ddf00 70%, #3e8900 100%);
@@ -361,6 +359,8 @@
           0 0 0 2px rgba(112,255,0,.18) inset,
           0 0 24px rgba(240,255,120,.26);
         animation:popupkw-pulseClose 2.2s ease-in-out infinite;
+        appearance:none;
+        -webkit-appearance:none;
       }
 
       @media (max-width:420px){
@@ -429,9 +429,9 @@
           <div class="sFooter">© KLIKWIN88 GROUP</div>
 
           <div class="sCloseWrap">
-            <a class="sClose" id="${CLOSE_BTN_ID}" href="${CLOSE_REDIRECT_URL}" target="_blank" rel="noopener">
+            <button type="button" class="sClose" id="${CLOSE_BTN_ID}">
               KLIK DISINI UNTUK MENUTUP
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -466,10 +466,9 @@
 
     const closeBtn = document.getElementById(CLOSE_BTN_ID);
     if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        try {
-          localStorage.setItem(STORAGE_KEY, "1");
-        } catch (_) {}
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closePopup(true);
       });
     }
   }
