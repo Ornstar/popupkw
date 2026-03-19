@@ -3,7 +3,7 @@
 
   const LIVECHAT_URL = "https://speed-ly.com/LIVECHAT_KLIKWIN88";
   const TELEGRAM_URL = "https://speed-ly.com/TELEGRAM_OFFICIAL";
-  const BANNER_URL = "http://plcl.me/images/p2XQC.jpg";
+  const BANNER_URL = "http://plcl.me/images/hDFno.jpg";
 
   const STORAGE_KEY = "popup_kw_seen_v1";
   const STYLE_ID = "popupkw-style";
